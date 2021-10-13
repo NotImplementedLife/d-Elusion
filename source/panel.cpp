@@ -4,8 +4,9 @@
 #include "panel-bg.h"
 #include <stdio.h>
 
+Panel::Panel() {}
 
-Panel::Panel()
+void Panel::init()
 {
     videoSetModeSub(MODE_5_2D);
     vramSetBankC(VRAM_C_SUB_BG_0x06200000);
@@ -23,9 +24,21 @@ Panel::Panel()
     iprintf("000");
 
     dmaCopy(panel_bgPal,BG_PALETTE_SUB, panel_bgPalLen);
-    setButtonState(Btn_Cursor,BtnState_Disabled);
+
+    buttonBgIndex[Btn_Cursor] = getColorIndex(0x3DFF);
+    buttonBgIndex[Btn_Fish]   = getColorIndex(0x3EDF);
+    buttonBgIndex[Btn_Flag]   = getColorIndex(0x3FBF);
+    buttonBgIndex[Btn_Restart]   = getColorIndex(0x03E8);
+
+    buttonFgIndex[Btn_Cursor] = getColorIndex(0x037F);
+    buttonFgIndex[Btn_Fish]   = getColorIndex(0x7FE0);
+    buttonFgIndex[Btn_Flag]   = getColorIndex(0x001F);
+    buttonFgIndex[Btn_Restart]   = getColorIndex(0x6C1F);
+
+    setButtonState(Btn_Cursor,BtnState_Selected);
     setButtonState(Btn_Fish,BtnState_Selected);
-    setButtonState(Btn_Flag,BtnState_Normal);
+    setButtonState(Btn_Flag,BtnState_Selected);
+    setButtonState(Btn_Restart,BtnState_Selected);
 }
 
 void Panel::setButtonState(PanelButton button,PanelButtonState state)
@@ -34,16 +47,29 @@ void Panel::setButtonState(PanelButton button,PanelButtonState state)
     switch(state)
     {
     case BtnState_Normal:
-        bg=RGB15(31,31,31), fg=RGB15(0,0,0);
+        bg= RGB15(31,31,31), fg=(button==Btn_Flag) ? RGB15(28,28,28) : RGB15(0,0,0);
         break;
     case BtnState_Selected:
-        bg=RGB15(0,0,0), fg=RGB15(31,31,31);
+        bg=(button==Btn_Flag) ? RGB15(31,31,31):RGB15(0,0,0), fg=(button==Btn_Flag) ? RGB15(31,0,0) :RGB15(31,31,31);
         break;
     case BtnState_Disabled:
         bg=RGB15(23,23,23), fg=RGB15(15,15,15);
         break;
+    case BtnState_Hidden:
+        bg=fg=RGB15(31,31,31);
     }
 
     BG_PALETTE_SUB[Panel::buttonBgIndex[button]]=bg;
     BG_PALETTE_SUB[Panel::buttonFgIndex[button]]=fg;
+}
+
+
+int Panel::getColorIndex(u16 color)
+{
+    for(int i=0;i<256;i++)
+    {
+        if(BG_PALETTE_SUB[i]==color)
+            return i;
+    }
+    return 0;
 }

@@ -7,7 +7,10 @@ class Car
 public:
     Car();
 
+    void init();
     void setX(int x);
+    void setY(int y);
+    void advance();
     void setOam();
 private:
     Sprite front, back, wheel1, wheel2;

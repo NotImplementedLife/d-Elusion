@@ -6,11 +6,19 @@
 
 int sgn(int x) { return (x > 0) ? 1 : ((x < 0) ? -1 : 0); }
 
-Cat::Cat() : Sprite(SpriteSize_32x32, cat_spriteTiles, 24)
+Cat::Cat()
 {
+
+}
+
+void Cat::init()
+{
+    create(SpriteSize_32x32, cat_spriteTiles, 24);
     x = 256/2-16;
     y = 192/2-16;
+    priority = 3;
 }
+
 
 void Cat::updateMove(int toX,int toY)
 {
@@ -77,11 +85,53 @@ void Cat::updateMove(int toX,int toY)
             animIndex=0;
         setFrameIndex(kfr[animIndex]);
     }
+}
 
+void Cat::play_dead()
+{
+    if(crtKeyFrame != keyFramesDead)
+    {
+        crtKeyFrame = (int*)keyFramesDead;
+        animTimer = 0;
+    }
 
+    if(animTimer==24)
+    {
+        setFrameIndex(keyFramesDead[0]);
+    }
+    else if(24<animTimer && animTimer<30 && animTimer%5==0)
+    {
+        y-=1;
+        x+=5;
+    }
+    else if(30<=animTimer && animTimer<50 && animTimer%5==0)
+    {
+        y+=1;
+        x+=5;
+    }
+    else if(animTimer==50)
+    {
+        setFrameIndex(keyFramesDead[1]);
+    }
+    else if(animTimer==75)
+    {
+        setFrameIndex(keyFramesDead[2]);
+    }
+    else if(animTimer==99)
+    {
+        setFrameIndex(keyFramesDead[3]);
+    }
 
-    //mapX+=dx;
-    //mapY+=dy;
+    if(animTimer<100)
+        animTimer++;
+}
+
+void Cat::reset()
+{
+    crtKeyFrame=NULL;
+    setFrameIndex(0);
+    x = 256/2-16;
+    y = 192/2-16;
 }
 
 

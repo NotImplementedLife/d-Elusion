@@ -3,6 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+#include "scene.hpp"
 #include "cat.hpp"
 #include "car.hpp"
 #include "panel.hpp"
@@ -12,49 +13,10 @@ void playIntro(Cat &cat);
 
 int main(void)
 {
-	int i = 0;
-	touchPosition touch;
-
-	videoSetMode(MODE_0_2D);
-
-	setBackdropColor(ARGB16(1,31,31,31));
-	setBackdropColorSub(ARGB16(1,31,31,31));
-
-	initSprites();
-	Cat cat;
-	Car car;
-
-
-
-    //playIntro(cat);
-
-
-	Panel panel;
-	car.setX(-128);
-
-	int x=-128;
-	while(1)
-    {
-		scanKeys();
-		int held = keysHeld();
-		int dx=128,dy=96;
-		if(held & KEY_TOUCH)
-        {
-			touchRead(&touch);
-			dx=touch.px;
-			dy=touch.py;
-        }
-        cat.updateMove(dx,dy);
-        x+=4;
-        car.setX(x);
-        car.setOam();
-		cat.setOam();
-
-		swiWaitForVBlank();
-
-
-		oamUpdate(&oamMain);
-	}
+    Scene scene;
+    scene.init();
+    //scene.run();
+    scene.game_over();
 
 	return 0;
 }

@@ -4,30 +4,32 @@
 
 #include <stdio.h>
 
-Car::Car()
+Car::Car() { }
+
+void Car::init()
 {
 
-    front=Sprite(SpriteSize_64x64, car_spriteTiles,2);
+    front.create(SpriteSize_64x64, car_spriteTiles,2);
     front.x=0;
     front.y=0;
-    front.priority=3;
+    front.priority=2;
     front.setFrameIndex(0);
-    back=Sprite(SpriteSize_64x64, car_spriteTiles,2);
+    back.create(SpriteSize_64x64, car_spriteTiles,2);
     back.x=64;
     back.y=0;
-    back.priority=3;
+    back.priority=2;
     back.setFrameIndex(1);
 
-    wheel1=Sprite(SpriteSize_16x16,car_spriteTiles,33);
+    wheel1.create(SpriteSize_16x16,car_spriteTiles,33);
     wheel1.x=23;
     wheel1.y=38;
-    wheel1.priority=2;
+    wheel1.priority=1;
     wheel1.setFrameIndex(32);
 
-    wheel2=Sprite(SpriteSize_16x16,car_spriteTiles,33);
+    wheel2.create(SpriteSize_16x16,car_spriteTiles,33);
     wheel2.x=93;
     wheel2.y=38;
-    wheel2.priority=2;
+    wheel2.priority=1;
     wheel2.setFrameIndex(32);
 }
 
@@ -37,6 +39,19 @@ void Car::setX(int x)
     back.x=x+64;
     wheel1.x=x+23;
     wheel2.x=x+93;
+}
+
+void Car::setY(int y)
+{
+    front.y=y;
+    back.y=y;
+    wheel1.y=wheel2.y=y+38;
+}
+
+void Car::advance()
+{
+    if(front.x<256)
+        setX(front.x+10);
 }
 
 void Car::setOam()

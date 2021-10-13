@@ -19,7 +19,7 @@ public:
     SpriteSize size;
 
     Sprite();
-    Sprite(SpriteSize _size,const uint* tiles,int _framesCount);
+    void create(SpriteSize _size,const uint* tiles,int _framesCount);
 
     void setFrameIndex(int index);
     void setOam();

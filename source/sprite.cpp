@@ -22,7 +22,7 @@ void initSprites()
 
 Sprite::Sprite(){}
 
-Sprite::Sprite(SpriteSize _size,const uint* tiles,int _framesCount)
+void Sprite::create(SpriteSize _size,const uint* tiles,int _framesCount)
 {
     size=_size;
     framesCount=_framesCount;
@@ -51,7 +51,6 @@ Sprite::Sprite(SpriteSize _size,const uint* tiles,int _framesCount)
         tiles+=nbytes/4;
     }
     setFrameIndex(0);
-    //dmaCopy(tiles, gfx, count*nbytes);
 }
 
 void Sprite::setFrameIndex(int index)

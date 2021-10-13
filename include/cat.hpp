@@ -6,7 +6,11 @@ class Cat : public Sprite
 {
 public:
     Cat();
+    void init();
+    void play_dead();
     void updateMove(int toX,int toY);
+
+    void reset();
 
     int mapX, mapY;
 
@@ -26,4 +30,6 @@ private:
     const int keyFramesTopLeft[6] = { 13, 21, 13, 21, 13, 21 };
     const int keyFramesBottomRight[6] = { 14, 22, 14, 22, 14, 22 };
     const int keyFramesBottomLeft[6] = { 15, 23, 15, 23, 15, 23 };
+
+    const int keyFramesDead[4] = {4, 5, 6, 7};
 };
