@@ -1,13 +1,23 @@
 #include "sprite.hpp"
 
+#include "car-sprite.h"
+
 void initSprites()
 {
     vramSetBankA(VRAM_A_MAIN_SPRITE);
-	oamInit(&oamMain, SpriteMapping_1D_128, false);
 
-	SPRITE_PALETTE[0] = 0x463F;
-	SPRITE_PALETTE[1] = 0x0000;
-	SPRITE_PALETTE[2] = 0x001F;
+	vramSetBankF(VRAM_F_LCD);
+
+	VRAM_F_EXT_SPR_PALETTE[0][0] = 0x463F;
+	VRAM_F_EXT_SPR_PALETTE[0][1] = 0x0000;
+	VRAM_F_EXT_SPR_PALETTE[0][2] = 0x001F;
+
+	dmaCopy(car_spritePal, &VRAM_F_EXT_SPR_PALETTE[1][0],car_spritePalLen);
+
+	vramSetBankF(VRAM_F_SPRITE_EXT_PALETTE);
+
+
+	oamInit(&oamMain, SpriteMapping_1D_128, true);
 }
 
 Sprite::Sprite(){}

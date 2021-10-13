@@ -19,6 +19,19 @@ void Cat::updateMove(int toX,int toY)
     toX-=128;
     toY-=96;
 
+    if(toX==0 && toY==0)
+    {
+        if(crtKeyFrame==keyFramesDown || crtKeyFrame==keyFramesBottomLeft || crtKeyFrame==keyFramesBottomRight)
+            setFrameIndex(0);
+        else if(crtKeyFrame==keyFramesUp || crtKeyFrame==keyFramesTopLeft || crtKeyFrame==keyFramesTopRight)
+            setFrameIndex(1);
+        else if(crtKeyFrame==keyFramesLeft)
+            setFrameIndex(2);
+        else if(crtKeyFrame==keyFramesRight)
+            setFrameIndex(3);
+        return;
+    }
+
     int ax = a*toX, ay = a*toY;
     int bx = b*toX, by = b*toY;
 
@@ -27,17 +40,43 @@ void Cat::updateMove(int toX,int toY)
     int d3 = sgn(bx+ay);
     int d4 = sgn(ax+by);
 
-    iprintf("\e[1;1H\e[2J%2d %2d %2d %2d",d1,d2,d3,d4);
+    //iprintf("\e[1;1H\e[2J%2d %2d %2d %2d",d1,d2,d3,d4);
 
-    /*int* kfr;
+    int* kfr;
 
-    if(d1*d2>=0)
-        kfr = keyFramesRight;
-    else if(d1>=0 && d2<=0)
-        kfr = keyFramesTopRight;
-    else if(d2>=0 && d3<0)
-        kfr = keyFramesTop;
-    else if()*/
+    if(d1==1 && d2==1 && d3==1 && d4==1)
+        kfr = (int*)keyFramesRight;
+    else if(d1== 1 && d2== 1 && d3==-1 && d4==-1)
+        kfr = (int*)keyFramesUp;
+    else if(d1==-1 && d2==-1 && d3==-1 && d4==-1)
+        kfr = (int*)keyFramesLeft;
+    else if(d1==-1 && d2==-1 && d3== 1 && d4== 1)
+        kfr = (int*)keyFramesDown;
+
+    else if(d1== 1 && d2== 1 && d3== 1 && d4==-1)
+        kfr = (int*)keyFramesTopRight;
+    else if(d1== 1 && d2==-1 && d3==-1 && d4==-1)
+        kfr = (int*)keyFramesTopLeft;
+    else if(d1==-1 && d2==-1 && d3==-1 && d4== 1)
+        kfr = (int*)keyFramesBottomLeft;
+    else if(d1==-1 && d2== 1 && d3== 1 && d4== 1)
+        kfr = (int*)keyFramesBottomRight;
+
+    if(kfr!=crtKeyFrame)
+    {
+        crtKeyFrame=kfr;
+        animTimer=0;
+        animIndex=0;
+    }
+    else animTimer++;
+    if(animTimer==10)
+    {
+        animTimer=0;
+        animIndex++;
+        if(animIndex>=6)
+            animIndex=0;
+        setFrameIndex(kfr[animIndex]);
+    }
 
 
 
