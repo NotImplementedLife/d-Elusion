@@ -35,10 +35,10 @@ void Panel::init()
     buttonFgIndex[Btn_Flag]   = getColorIndex(0x001F);
     buttonFgIndex[Btn_Restart]   = getColorIndex(0x6C1F);
 
-    setButtonState(Btn_Cursor,BtnState_Selected);
-    setButtonState(Btn_Fish,BtnState_Selected);
-    setButtonState(Btn_Flag,BtnState_Selected);
-    setButtonState(Btn_Restart,BtnState_Selected);
+    setButtonState(Btn_Cursor,BtnState_Disabled);
+    setButtonState(Btn_Fish,BtnState_Disabled);
+    setButtonState(Btn_Flag,BtnState_Disabled);
+    setButtonState(Btn_Restart,BtnState_Hidden);
 }
 
 void Panel::setButtonState(PanelButton button,PanelButtonState state)

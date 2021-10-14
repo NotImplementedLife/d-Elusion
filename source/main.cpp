@@ -15,7 +15,7 @@ int main(void)
 {
     Scene scene;
     scene.init();
-    //scene.run();
+    scene.run();
     scene.game_over();
 
 	return 0;
@@ -34,7 +34,7 @@ void playIntro(Cat &cat)
 
     for(int j=200;j--;)
     {
-        cat.updateMove(128,0);
+        //cat.updateMove(128,0);
         cat.setOam();
         swiWaitForVBlank();
         oamUpdate(&oamMain);
@@ -46,4 +46,10 @@ void playIntro(Cat &cat)
     {
         swiWaitForVBlank();
     }
+}
+
+
+void Scene::cat_moved(int dx,int dy)
+{
+
 }

@@ -22,7 +22,7 @@ public:
     void create(SpriteSize _size,const uint* tiles,int _framesCount);
 
     void setFrameIndex(int index);
-    void setOam();
+    void setOam(int oamIndex=0);
 protected:
     int frameIndex=0;
 };

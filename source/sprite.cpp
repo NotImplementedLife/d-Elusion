@@ -59,10 +59,10 @@ void Sprite::setFrameIndex(int index)
     crtGfx = frames[index];
 }
 
-void Sprite::setOam()
+void Sprite::setOam(int oamIndex)
 {
     oamSet(&oamMain,               //main graphics engine context
-			0,                     //oam index (0 to 127)
+			oamIndex,                     //oam index (0 to 127)
 			x, y,
 			priority,              //priority, lower renders last (on top)
 			0,					   //this is the palette index if multiple palettes or the alpha value if bmp sprite
