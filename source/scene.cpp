@@ -22,15 +22,6 @@ void Scene::init(bool intro)
     dmaCopy(tilesPal,BG_PALETTE,tilesPalLen);
     dmaCopy(tilesTiles, (void*)0x06000000, tilesTilesLen);
 
-    u32* map=(u32*)0x06000800;
-    for(int i=8;i--;)
-    {
-        for(int r=8;r--; *(map++) = 0x00010000, *(map++) = 0x00030002);
-        for(int r=8;r--; *(map++) = 0x00050004, *(map++) = 0x00070006);
-        for(int r=8;r--; *(map++) = 0x00090008, *(map++) = 0x000B000A);
-        for(int r=8;r--; *(map++) = 0x000D000C, *(map++) = 0x000F000E);
-    }
-
 	initSprites();
 
 	car.init();
@@ -44,12 +35,21 @@ void Scene::init(bool intro)
     if(!intro)
     {
         lcdMainOnTop();
+
+        u32* map=(u32*)0x06000800;
+        for(int i=8;i--;)
+        {
+            for(int r=8;r--; *(map++) = 0x00010000, *(map++) = 0x00030002);
+            for(int r=8;r--; *(map++) = 0x00050004, *(map++) = 0x00070006);
+            for(int r=8;r--; *(map++) = 0x00090008, *(map++) = 0x000B000A);
+            for(int r=8;r--; *(map++) = 0x000D000C, *(map++) = 0x000F000E);
+        }
+
         panel.init();
     }
     else
     {
         lcdMainOnBottom();
-
     }
 }
 
@@ -60,6 +60,26 @@ void Scene::run()
     {
         scanKeys();
 		int held = keysHeld();
+		int down = keysDown();
+
+		if(down & KEY_TOUCH)
+        {
+            touchRead(&touch);
+            iprintf("%d %d\n",touch.px,touch.py);
+            PanelButton b = panel.getTouchedButton(touch.px,touch.py);
+            if(b==Btn_Cursor)
+            {
+                cursor.setArrow();
+            }
+            else if(b==Btn_Fish)
+            {
+                cursor.setFish();
+            }
+            else if(b==Btn_Flag)
+            {
+                cursor.setFlag();
+            }
+        }
 
         if(held & KEY_UP)
         {
@@ -96,7 +116,10 @@ void Scene::run()
 
 			 bgScrollf(2,dx,dy);
 			 bgUpdate();
-
+        }
+        else
+        {
+            cat.updateMove(128,96);
         }
 		cat.setOam();
         cursor.setOam(10);

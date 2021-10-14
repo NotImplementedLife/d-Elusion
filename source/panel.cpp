@@ -35,9 +35,9 @@ void Panel::init()
     buttonFgIndex[Btn_Flag]   = getColorIndex(0x001F);
     buttonFgIndex[Btn_Restart]   = getColorIndex(0x6C1F);
 
-    setButtonState(Btn_Cursor,BtnState_Disabled);
-    setButtonState(Btn_Fish,BtnState_Disabled);
-    setButtonState(Btn_Flag,BtnState_Disabled);
+    setButtonState(Btn_Cursor,BtnState_Normal);
+    setButtonState(Btn_Fish,BtnState_Normal);
+    setButtonState(Btn_Flag,BtnState_Normal);
     setButtonState(Btn_Restart,BtnState_Hidden);
 }
 
@@ -61,6 +61,7 @@ void Panel::setButtonState(PanelButton button,PanelButtonState state)
 
     BG_PALETTE_SUB[Panel::buttonBgIndex[button]]=bg;
     BG_PALETTE_SUB[Panel::buttonFgIndex[button]]=fg;
+    buttonStates[button]=state;
 }
 
 
@@ -72,4 +73,27 @@ int Panel::getColorIndex(u16 color)
             return i;
     }
     return 0;
+}
+
+PanelButton Panel::getTouchedButton(int x, int y)
+{
+    for(int b=0;b<4;b++)
+    {
+        if(buttonStates[b]!=BtnState_Normal)
+            continue;
+        int o=4*b;
+        int x1 = buttonHitBoxes[o];
+        int y1 = buttonHitBoxes[o + 1];
+        int x2 = buttonHitBoxes[o + 2];
+        int y2 = buttonHitBoxes[o + 3];
+        if(x1<=x && x<=x2 && y1<=y && y<=y2)
+        {
+            for(int i=0;i<4;i++)
+                if(buttonStates[i]==BtnState_Selected)
+                    setButtonState((PanelButton)i,BtnState_Normal);
+            setButtonState((PanelButton)b,BtnState_Selected);
+            return (PanelButton)b;
+        }
+    }
+    return Btn_None;
 }
