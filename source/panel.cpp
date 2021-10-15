@@ -20,9 +20,6 @@ void Panel::init()
     bgSetPriority(id,0);
     bgSetPriority(cs0.bgId,1);
 
-    iprintf("\x1B[30m");
-    iprintf("000");
-
     dmaCopy(panel_bgPal,BG_PALETTE_SUB, panel_bgPalLen);
 
     buttonBgIndex[Btn_Cursor] = getColorIndex(0x3DFF);
