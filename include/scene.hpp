@@ -18,7 +18,8 @@ private:
 
     bool isIntro;
 
-    Actor* flags[32];
+    static const int flagsCount=64;
+    Actor* flags[flagsCount];
     Actor* motherCat;
     u32 blocks[32];
     int startX=16, startY=16;

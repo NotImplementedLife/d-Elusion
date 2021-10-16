@@ -51,7 +51,7 @@ void Scene::init(bool intro)
     u32* map=(u32*)0x06000800;
     if(!intro)
     {
-        for(int i=0;i<32;i++)
+        for(int i=0;i<flagsCount;i++)
         {
             flags[i]=new Actor();
             flags[i]->init(this);
@@ -181,6 +181,7 @@ void Scene::run()
                     {
                         cursor.setArrow();
                         panel.setButtonState(Btn_Flag,BtnState_Disabled);
+                        panel.setButtonState(Btn_Cursor,BtnState_Selected);
                     }
                 }
             }
@@ -250,7 +251,7 @@ void Scene::run()
 		cat.setOam();
         cursor.setOam(10);
 
-        for(int i=0;i<32;i++)
+        for(int i=0;i<flagsCount;i++)
         {
             flags[i]->update();
         }
@@ -473,7 +474,7 @@ void Scene::blockToScreen(int &x,int &y,int padding)
 
 Actor* Scene::flagOnBlock(int bX,int bY)
 {
-    for(int i=0;i<32;i++)
+    for(int i=0;i<flagsCount;i++)
     {
         if(flags[i]->blockX==bX && flags[i]->blockY==bY)
             return flags[i];
@@ -485,7 +486,7 @@ Actor* Scene::flagFree(int &unused)
 {
     Actor* flag=NULL;
     unused=0;
-    for(int i=0;i<32;i++)
+    for(int i=0;i<flagsCount;i++)
     {
         if(flags[i]->blockX==-10 && flags[i]->blockY==-10)
         {
