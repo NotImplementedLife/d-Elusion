@@ -6,6 +6,8 @@
 #include "cat-sprite.h"
 #include "car-sprite.h"
 
+#include "honk_bin.h"
+
 #include <nds.h>
 #include <math.h>
 #include <stdio.h>
@@ -338,6 +340,11 @@ void Scene::runIntro()
 
 void Scene::game_over(bool waitInput)
 {
+    if(!isIntro)
+    {
+        soundPlaySample(honk_bin,SoundFormat_ADPCM,honk_bin_size,65000,20,64,false,0);
+        for(int i=20;i--;swiWaitForVBlank());
+    }
     u16* pal=new u16[256];
     dmaCopy(title_bgPal,pal,title_bgPalLen);
     touchPosition touch;
@@ -370,6 +377,11 @@ void Scene::game_over(bool waitInput)
                 {
                     msg=2;
                 }
+                else if(b==Btn_Back)
+                {
+                    failed=true;
+                    msg=3;
+                }
             }
         }
         if(frames==200 && waitInput)
@@ -378,6 +390,7 @@ void Scene::game_over(bool waitInput)
             panel.setButtonState(Btn_Fish,BtnState_Disabled);
             panel.setButtonState(Btn_Flag,BtnState_Disabled);
             panel.setButtonState(Btn_Restart,BtnState_Normal);
+            panel.setButtonState(Btn_Back,BtnState_Normal);
         }
 
         if(frames>200 && (frames & 1) && !waitInput)
@@ -423,6 +436,14 @@ void Scene::game_over(bool waitInput)
         return;
     }
 
+    if(msg==3) // Back button pressed
+    {
+        failed=true;
+        delete pal;
+        solved=true;
+        return;
+    }
+
     msg=0;
     while(!msg)
     {
@@ -434,8 +455,8 @@ void Scene::game_over(bool waitInput)
         }
         swiWaitForVBlank();
     }
-    solved=true;
     delete pal;
+    solved=true;
 }
 
 void Scene::screenToBlock(int &x,int &y)

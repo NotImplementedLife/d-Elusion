@@ -50,4 +50,5 @@ public:
     void execute();
     void resetLevel();
     bool solved=false;
+    bool failed=false;
 };
