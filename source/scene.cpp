@@ -71,7 +71,10 @@ void Scene::init(bool intro)
             for(int r=8;r--; *(map++) = 0x000D000C, *(map++) = 0x000F000E);
         }
 
+        blockX=blockY=16;
         rawX=rawY=16<<13;
+        pxX=(rawX>>8)+16;
+        pxY=(rawY>>8)+16;
 
         panel.init();
         panel.setButtonState(Btn_Cursor,BtnState_Selected);
@@ -136,7 +139,6 @@ void Scene::run()
                 int cX=cursor.x+2;
                 int cY=cursor.y;
                 screenToBlock(cX,cY);
-                //iprintf("%3d %3d\n",cX,cY);
 
                 Actor* flag = flagOnBlock(cX,cY);
                 if(flag!=NULL)
@@ -150,7 +152,6 @@ void Scene::run()
                 int cX=cursor.x+8;
                 int cY=cursor.y+8;
                 screenToBlock(cX,cY);
-                //iprintf("%3d %3d\n",cX,cY);
 
                 Actor* flag = flagOnBlock(cX,cY);
                 if(flag==NULL)
@@ -202,26 +203,30 @@ void Scene::run()
 			cat.updateMove(dx, dy);
 			dx-=128, dy-=96;
 
-			iprintf("%3d %3d %3d %3d\n",blockX, blockY,pxX, pxY);
             float len=sqrt(dx*dx+dy*dy);
             dx=floatToFixed(0.5*dx/len,8);
             dy=floatToFixed(0.5*dy/len,8);
 
             rawX+=dx;
             rawY+=dy;
-            blockX=rawX>>13;
-            blockY=rawY>>13;
-            pxX=(rawX>>8);
-            pxY=(rawY>>8);
+            pxX=(rawX>>8)+16;
+            pxY=(rawY>>8)+16;
+            blockX=(cat.x+16+pxX-128)>>5;
+            blockY=(cat.y+16+pxY- 96)>>5;
 
             if(blockX<0 || blockX>31 || blockY<0 || blockY>31)
             {
                 msg=1;
             }
-            if(!isBlockFree())
+            else if(!isBlockFree())
             {
                 msg=1;
             }
+            else if(blockX==motherCat->blockX && (blockY==motherCat->blockY || blockY==motherCat->blockY+1))
+            {
+                msg=2; // level complete
+            }
+
 
 			bgScrollf(2,dx,dy);
             bgUpdate();
@@ -247,6 +252,35 @@ void Scene::run()
     {
         game_over();
     }
+    else if(msg==2)
+    {
+        solved=true;
+        panel.setButtonState(Btn_Cursor,BtnState_Disabled);
+        panel.setButtonState(Btn_Fish,BtnState_Disabled);
+        panel.setButtonState(Btn_Flag,BtnState_Disabled);
+        panel.setButtonState(Btn_Next,BtnState_Normal);
+        while(1)
+        {
+            scanKeys();
+            int down = keysDown();
+
+
+            if(down & KEY_START)
+            {
+                break;
+            }
+            else if(down & KEY_TOUCH)
+            {
+                touchRead(&touch);
+                PanelButton b = panel.getTouchedButton(touch.px,touch.py);
+                if(b==Btn_Next)
+                {
+                    break;
+                }
+            }
+            swiWaitForVBlank();
+        }
+    }
 }
 
 void Scene::runIntro()
@@ -267,8 +301,8 @@ void Scene::runIntro()
         rawY+=dy;
         blockX=rawX>>13;
         blockY=rawY>>13;
-        pxX=(rawX>>8);
-        pxY=(rawY>>8);
+        pxX=(rawX>>8)+16;
+        pxY=(rawY>>8)+16;
 
         if(blockX<0 || blockX>31 || blockY<0 || blockY>31)
         {
@@ -396,14 +430,14 @@ void Scene::game_over(bool waitInput)
 
 void Scene::screenToBlock(int &x,int &y)
 {
-    x+=pxX -128+16; x>>=5;
-    y+=pxY - 96+16; y>>=5;
+    x+=pxX -128; x>>=5;
+    y+=pxY - 96; y>>=5;
 }
 
 void Scene::blockToScreen(int &x,int &y,int padding)
 {
-    x<<=5; x+=128-16-pxX+padding;
-    y<<=5; y+= 96-16-pxY+padding;
+    x<<=5; x+=128-pxX+padding;
+    y<<=5; y+= 96-pxY+padding;
 }
 
 Actor* Scene::flagOnBlock(int bX,int bY)
@@ -433,23 +467,20 @@ Actor* Scene::flagFree(int &unused)
 
 void Scene::setBlocks(void* src)
 {
-    iprintf("\x1B[30m");
+    //iprintf("\x1B[30m");
     startX = blockX = (*((u8*)src++));
     startY = blockY = (*((u8*)src++));
     rawX=blockX<<13;
     rawY=blockY<<13;
+    pxX=(rawX>>8)+16;
+    pxY=(rawY>>8)+16;
     motherCat->blockX=(*((u8*)src++));
     motherCat->blockY=(*((u8*)src++));
     dmaCopy(src,blocks,128);
-    for(int i=0;i<16;i++)
-    {
-        iprintf("%4X %4X\n",blocks[2*i],blocks[2*i+1]);
-    }
 }
 
 bool Scene::isBlockFree()
 {
-    //iprintf("%4X %4X\n",blocks[blockY],1<<blockX);
     return (((u32)blocks[blockY]) & ((u32)(1<<blockX)))==0;
 }
 
@@ -463,12 +494,12 @@ void Scene::execute()
 
 void Scene::resetLevel()
 {
-    // ???????????????
-    cat.reset();
     blockX=startX;
     blockY=startY;
     rawX=blockX<<13;
     rawY=blockY<<13;
+    pxX=(rawX>>8)+16;
+    pxY=(rawY>>8)+16;
     panel.init();
     cursor.setArrow();
     cursor.hidden=false;

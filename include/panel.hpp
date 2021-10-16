@@ -8,7 +8,8 @@ enum PanelButton
     Btn_Cursor  =  0,
     Btn_Fish    =  1,
     Btn_Flag    =  2,
-    Btn_Restart =  3
+    Btn_Restart =  3,
+    Btn_Next    =  4,
 };
 
 enum PanelButtonState
@@ -34,13 +35,15 @@ private:
     PrintConsole cs0;
     static int getColorIndex(u16 color);
 
-    const int buttonHitBoxes[16] =
+    static const int buttonsCount = 5;
+    const int buttonHitBoxes[4 * buttonsCount] =
     {
         201,  70, 255, 101, // Cursor
         201, 108, 255, 139, // Fish
         201, 146, 255, 177, // Flag
-         79,  86, 171, 118  // Restart
+         79,  86, 171, 118,  // Restart
+        109, 157, 141, 175  // Next
     };
 
-    int buttonStates[4] = {0, 0, 0, 0};
+    int buttonStates[5] = {0, 0, 0, 0, 0};
 };

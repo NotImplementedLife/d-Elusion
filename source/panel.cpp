@@ -22,20 +22,24 @@ void Panel::init()
 
     dmaCopy(panel_bgPal,BG_PALETTE_SUB, panel_bgPalLen);
 
-    buttonBgIndex[Btn_Cursor] = getColorIndex(0x3DFF);
-    buttonBgIndex[Btn_Fish]   = getColorIndex(0x3EDF);
-    buttonBgIndex[Btn_Flag]   = getColorIndex(0x3FBF);
-    buttonBgIndex[Btn_Restart]   = getColorIndex(0x03E8);
+    buttonBgIndex[Btn_Cursor]  = getColorIndex(0x3DFF);
+    buttonBgIndex[Btn_Fish]    = getColorIndex(0x3EDF);
+    buttonBgIndex[Btn_Flag]    = getColorIndex(0x3FBF);
+    buttonBgIndex[Btn_Restart] = getColorIndex(0x03E8);
+    buttonBgIndex[Btn_Next]    = getColorIndex(0x3C40);
 
-    buttonFgIndex[Btn_Cursor] = getColorIndex(0x037F);
-    buttonFgIndex[Btn_Fish]   = getColorIndex(0x7FE0);
-    buttonFgIndex[Btn_Flag]   = getColorIndex(0x001F);
-    buttonFgIndex[Btn_Restart]   = getColorIndex(0x6C1F);
+
+    buttonFgIndex[Btn_Cursor]  = getColorIndex(0x037F);
+    buttonFgIndex[Btn_Fish]    = getColorIndex(0x7FE0);
+    buttonFgIndex[Btn_Flag]    = getColorIndex(0x001F);
+    buttonFgIndex[Btn_Restart] = getColorIndex(0x6C1F);
+    buttonFgIndex[Btn_Next]    = getColorIndex(0x7C80);
 
     setButtonState(Btn_Cursor,BtnState_Normal);
     setButtonState(Btn_Fish,BtnState_Normal);
     setButtonState(Btn_Flag,BtnState_Normal);
     setButtonState(Btn_Restart,BtnState_Hidden);
+    setButtonState(Btn_Next,BtnState_Hidden);
 }
 
 void Panel::setButtonState(PanelButton button,PanelButtonState state)
@@ -74,7 +78,7 @@ int Panel::getColorIndex(u16 color)
 
 PanelButton Panel::getTouchedButton(int x, int y)
 {
-    for(int b=0;b<4;b++)
+    for(int b=0;b<buttonsCount;b++)
     {
         if(buttonStates[b]!=BtnState_Normal)
             continue;
