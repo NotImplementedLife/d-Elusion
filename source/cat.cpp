@@ -13,7 +13,7 @@ Cat::Cat()
 
 void Cat::init()
 {
-    create(SpriteSize_32x32, cat_spriteTiles, 3*tilesStride);
+    create(&oamMain, SpriteSize_32x32, cat_spriteTiles, 3*tilesStride);
     x = 256/2-16;
     y = 192/2-16;
     priority = 3;

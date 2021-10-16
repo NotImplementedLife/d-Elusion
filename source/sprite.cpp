@@ -1,34 +1,10 @@
 #include "sprite.hpp"
 
-#include "car-sprite.h"
-#include "cat-sprite.h"
-
-void initSprites()
-{
-    vramSetBankA(VRAM_A_MAIN_SPRITE);
-
-	vramSetBankF(VRAM_F_LCD);
-
-	/*VRAM_F_EXT_SPR_PALETTE[0][0] = 0x463F;
-	VRAM_F_EXT_SPR_PALETTE[0][1] = 0x0000;
-	VRAM_F_EXT_SPR_PALETTE[0][2] = 0x001F;
-	VRAM_F_EXT_SPR_PALETTE[0][3] = 0x4BE0;
-	VRAM_F_EXT_SPR_PALETTE[0][4] = 0x03E9;
-	VRAM_F_EXT_SPR_PALETTE[0][5] = 0x13E0;*/
-
-	dmaCopy(cat_spritePal, &VRAM_F_EXT_SPR_PALETTE[0][0],cat_spritePalLen);
-	dmaCopy(car_spritePal, &VRAM_F_EXT_SPR_PALETTE[1][0],car_spritePalLen);
-
-	vramSetBankF(VRAM_F_SPRITE_EXT_PALETTE);
-
-
-	oamInit(&oamMain, SpriteMapping_1D_128, true);
-}
-
 Sprite::Sprite(){}
 
-void Sprite::create(SpriteSize _size,const uint* tiles,int _framesCount)
+void Sprite::create(OamState *oamState, SpriteSize _size,const uint* tiles,int _framesCount)
 {
+    oam=oamState;
     size=_size;
     framesCount=_framesCount;
 
@@ -51,7 +27,7 @@ void Sprite::create(SpriteSize _size,const uint* tiles,int _framesCount)
     frames=new u16*[framesCount];
     for(int i=0;i<framesCount;i++)
     {
-        frames[i]=oamAllocateGfx(&oamMain, size, SpriteColorFormat_256Color);
+        frames[i]=oamAllocateGfx(oam, size, SpriteColorFormat_256Color);
         dmaCopy(tiles,frames[i],nbytes);
         tiles+=nbytes/4;
     }
@@ -66,7 +42,7 @@ void Sprite::setFrameIndex(int index)
 
 void Sprite::setOam(int oamIndex)
 {
-    oamSet(&oamMain,               //main graphics engine context
+    oamSet(oam,               //main graphics engine context
 			oamIndex,                     //oam index (0 to 127)
 			x, y,
 			priority,              //priority, lower renders last (on top)

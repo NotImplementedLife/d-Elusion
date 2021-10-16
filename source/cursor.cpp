@@ -6,7 +6,7 @@ Cursor::Cursor() {}
 
 void Cursor::init()
 {
-    create(SpriteSize_16x16, icons_spriteTiles, 4);
+    create(&oamMain, SpriteSize_16x16, icons_spriteTiles, 4);
     x = 256/2-8;
     y = 192/2-24;
     priority = 1;

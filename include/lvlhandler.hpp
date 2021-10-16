@@ -6,4 +6,9 @@
 
 #define LEVEL_ADDRESS(i) (((void*)levels_bin) + ( i*LEVEL_SIZE ))
 
-static bool lvlComplete[12];
+inline bool lvlComplete[12] =
+{
+    1, 0, 0, 0,
+    0, 0, 0, 0,
+    0, 0, 0, 0
+};

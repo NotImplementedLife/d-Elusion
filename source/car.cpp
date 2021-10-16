@@ -9,24 +9,24 @@ Car::Car() { }
 void Car::init()
 {
 
-    front.create(SpriteSize_64x64, car_spriteTiles,2);
+    front.create(&oamMain, SpriteSize_64x64, car_spriteTiles,2);
     front.x=0;
     front.y=0;
     front.priority=2;
     front.setFrameIndex(0);
-    back.create(SpriteSize_64x64, car_spriteTiles,2);
+    back.create(&oamMain, SpriteSize_64x64, car_spriteTiles,2);
     back.x=64;
     back.y=0;
     back.priority=2;
     back.setFrameIndex(1);
 
-    wheel1.create(SpriteSize_16x16,car_spriteTiles,33);
+    wheel1.create(&oamMain, SpriteSize_16x16,car_spriteTiles,33);
     wheel1.x=23;
     wheel1.y=38;
     wheel1.priority=1;
     wheel1.setFrameIndex(32);
 
-    wheel2.create(SpriteSize_16x16,car_spriteTiles,33);
+    wheel2.create(&oamMain, SpriteSize_16x16,car_spriteTiles,33);
     wheel2.x=93;
     wheel2.y=38;
     wheel2.priority=1;

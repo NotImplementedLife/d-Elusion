@@ -2,9 +2,6 @@
 
 #include <nds.h>
 
-void initSprites();
-
-
 class Sprite
 {
 private:
@@ -17,9 +14,10 @@ public:
     int priority=0;
     bool hidden = false;
     SpriteSize size;
+    OamState* oam;
 
     Sprite();
-    void create(SpriteSize _size,const uint* tiles,int _framesCount);
+    void create(OamState* oamState, SpriteSize _size,const uint* tiles,int _framesCount);
 
     void setFrameIndex(int index);
     void setOam(int oamIndex=0);

@@ -4,6 +4,7 @@
 #include "title-bg.h"
 #include "icons-sprite.h"
 #include "cat-sprite.h"
+#include "car-sprite.h"
 
 #include <nds.h>
 #include <math.h>
@@ -13,6 +14,8 @@ Scene::Scene() { }
 
 void Scene::init(bool intro)
 {
+    oamClear(&oamMain,0,128);
+    oamClear(&oamSub,0,128);
     isIntro=intro;
 	videoSetMode(MODE_5_2D);
 	vramSetBankB(VRAM_B_MAIN_BG_0x06000000);
@@ -26,7 +29,14 @@ void Scene::init(bool intro)
     dmaCopy(tilesPal,BG_PALETTE,tilesPalLen);
     dmaCopy(tilesTiles, (void*)0x06000000, tilesTilesLen);
 
-	initSprites();
+	vramSetBankA(VRAM_A_MAIN_SPRITE);
+	vramSetBankI(VRAM_I_LCD);
+	vramSetBankD(VRAM_D_LCD);
+	vramSetBankF(VRAM_F_LCD);
+	dmaCopy(cat_spritePal, &VRAM_F_EXT_SPR_PALETTE[0][0],cat_spritePalLen);
+	dmaCopy(car_spritePal, &VRAM_F_EXT_SPR_PALETTE[1][0],car_spritePalLen);
+	vramSetBankF(VRAM_F_SPRITE_EXT_PALETTE);
+	oamInit(&oamMain, SpriteMapping_1D_128, true);
 
 	car.init();
     cat.init();
@@ -44,7 +54,7 @@ void Scene::init(bool intro)
             flags[i]=new Actor();
             flags[i]->init(this);
             flags[i]->oamIndex=16+i;
-            flags[i]->sprite.create(SpriteSize_16x16, icons_spriteTiles, 4);
+            flags[i]->sprite.create(&oamMain, SpriteSize_16x16, icons_spriteTiles, 4);
             flags[i]->sprite.priority = 3;
             flags[i]->sprite.setFrameIndex(3);
             flags[i]->blockX=-10;
@@ -54,7 +64,7 @@ void Scene::init(bool intro)
         motherCat=new Actor();
         motherCat->init(this);
         motherCat->oamIndex=7;
-        motherCat->sprite.create(SpriteSize_32x64,cat_spriteTiles,30);
+        motherCat->sprite.create(&oamMain, SpriteSize_32x64,cat_spriteTiles,30);
         motherCat->sprite.priority=3;
         motherCat->sprite.setFrameIndex(4);
         motherCat->blockX=-10;
