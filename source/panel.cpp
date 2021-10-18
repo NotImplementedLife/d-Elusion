@@ -2,7 +2,6 @@
 
 #include <nds.h>
 #include "panel-bg.h"
-#include <stdio.h>
 
 Panel::Panel() {}
 
@@ -15,10 +14,7 @@ void Panel::init()
 
     dmaCopy(panel_bgBitmap,(void*)0x06200000,panel_bgBitmapLen);
 
-    consoleInit(&cs0, 0, BgType_Text4bpp, BgSize_T_256x256, 26, 3, false, true);
-
     bgSetPriority(id,0);
-    bgSetPriority(cs0.bgId,1);
 
     dmaCopy(panel_bgPal,BG_PALETTE_SUB, panel_bgPalLen);
 

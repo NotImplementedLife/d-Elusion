@@ -33,7 +33,6 @@ private:
     int buttonBgIndex[6];
     int buttonFgIndex[6];
 
-    PrintConsole cs0;
     static int getColorIndex(u16 color);
 
     static const int buttonsCount = 6;

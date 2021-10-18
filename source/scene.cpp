@@ -1,16 +1,17 @@
 #include "scene.hpp"
 
+#ifdef HAS_SOUND
+#include "honk_bin.h"
+#endif
+
 #include "tiles.h"
 #include "title-bg.h"
 #include "icons-sprite.h"
 #include "cat-sprite.h"
 #include "car-sprite.h"
 
-#include "honk_bin.h"
-
 #include <nds.h>
 #include <math.h>
-#include <stdio.h>
 
 Scene::Scene() { }
 
@@ -341,11 +342,13 @@ void Scene::runIntro()
 
 void Scene::game_over(bool waitInput)
 {
+    #ifdef HAS_SOUND
     if(!isIntro)
     {
         soundPlaySample(honk_bin,SoundFormat_ADPCM,honk_bin_size,65000,20,64,false,0);
         for(int i=20;i--;swiWaitForVBlank());
     }
+    #endif
     u16* pal=new u16[256];
     dmaCopy(title_bgPal,pal,title_bgPalLen);
     touchPosition touch;
@@ -497,11 +500,11 @@ Actor* Scene::flagFree(int &unused)
     return flag;
 }
 
-void Scene::setBlocks(void* src)
+void Scene::setBlocks(u8* src)
 {
     //iprintf("\x1B[30m");
-    startX = blockX = (*((u8*)src++));
-    startY = blockY = (*((u8*)src++));
+    startX = blockX = *(src++);
+    startY = blockY = *(src++);
     rawX=blockX<<13;
     rawY=blockY<<13;
     pxX=(rawX>>8)+16;

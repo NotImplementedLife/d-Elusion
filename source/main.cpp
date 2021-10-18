@@ -1,13 +1,19 @@
 #include "scene.hpp"
 #include "lvlhandler.hpp"
 #include "lvlselector.hpp"
+
+#ifdef HAS_SOUND
 #include "bgm_bin.h"
+#endif
 
 int main(void)
 {
     powerOn(POWER_ALL_2D);
+
+    #ifdef HAS_SOUND
     soundEnable();
     soundPlaySample(bgm_bin,SoundFormat_ADPCM,bgm_bin_size,28000,100,64,true,0);
+    #endif
     Scene* scene = new Scene();
     scene->init(true);
     scene->execute();

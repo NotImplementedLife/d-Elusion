@@ -6,6 +6,8 @@
 #include "panel.hpp"
 #include "actor.hpp"
 
+#define HAS_SOUND 1
+
 class Actor;
 
 class Scene
@@ -18,7 +20,7 @@ private:
 
     bool isIntro;
 
-    static const int flagsCount=64;
+    static const int flagsCount=48;
     Actor* flags[flagsCount];
     Actor* motherCat;
     u32 blocks[32];
@@ -45,7 +47,7 @@ public:
     Actor* flagOnBlock(int bX,int bY);
     Actor* flagFree(int &unused);
 
-    void setBlocks(void* src);
+    void setBlocks(u8* src);
     bool isBlockFree();
 
     void execute();
