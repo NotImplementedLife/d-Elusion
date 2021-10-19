@@ -1,4 +1,4 @@
-# <img src="README_Resources/logo.png"></img>
+<img src="README_Resources/logo.PNG"></img>
 
 # Credits
 
