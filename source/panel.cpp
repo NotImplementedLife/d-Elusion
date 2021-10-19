@@ -12,7 +12,7 @@ void Panel::init()
 
     int id=bgInitSub(2, BgType_Bmp8, BgSize_B8_256x256, 0, 0);
 
-    dmaCopy(panel_bgBitmap,(void*)0x06200000,panel_bgBitmapLen);
+    decompress(panel_bgBitmap,(void*)0x06200000,LZ77Vram);
 
     bgSetPriority(id,0);
 

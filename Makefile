@@ -22,6 +22,12 @@ GRAPHICS	:=	gfx
 SOURCES		:=	source
 INCLUDES	:=	include build
 
+
+GAME_TITLE    	:=	d-Elusion
+GAME_SUBTITLE1	:=  by NotImpLife
+GAME_SUBTITLE2	:=  for Retro Platform Jam \#3
+GAME_ICON       :=  $(ROOTDIR)/icon.bmp
+
 #---------------------------------------------------------------------------------
 # options for code generation
 #---------------------------------------------------------------------------------
@@ -29,7 +35,7 @@ ARCH	:=	-mthumb -mthumb-interwork
 
 CFLAGS	:=	-g -Wall -O2\
  			-march=armv5te -mtune=arm946e-s -fomit-frame-pointer\
-			-ffast-math \
+			-ffast-math\
 			$(ARCH)
 
 CFLAGS	+=	$(INCLUDE) -DARM9

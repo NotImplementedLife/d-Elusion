@@ -1,4 +1,4 @@
-# d-Elusion
+<img src="README_Resources/logo.png"/>
 
 # Credits
 

@@ -1,6 +1,7 @@
 #include "scene.hpp"
 #include "lvlhandler.hpp"
 #include "lvlselector.hpp"
+#include "ending.hpp"
 
 #ifdef HAS_SOUND
 #include "bgm_bin.h"
@@ -9,6 +10,8 @@
 int main(void)
 {
     powerOn(POWER_ALL_2D);
+
+    bool endingRan=false;
 
     #ifdef HAS_SOUND
     soundEnable();
@@ -30,6 +33,12 @@ int main(void)
         scene->init();
         scene->setBlocks(LEVEL_ADDRESS(level));
         scene->execute();
+
+        if(!scene->failed && !endingRan && level==3)
+        {
+            runEnding();
+            endingRan=true;
+        }
 
         if(!scene->failed && level<11)
             lvlComplete[level+1]=1;

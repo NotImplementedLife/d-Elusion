@@ -33,7 +33,7 @@ void LvlSelector::init()
 
 	dmaFillWords(0x0000,(void*)0x06200000,256*192);
 
-	dmaCopy(tutorial_bgBitmap,(void*)0x06000000,256*192);
+	decompress(tutorial_bgBitmap,(void*)0x06000000,LZ77Vram);
 	dmaCopy(tutorial_bgPal,BG_PALETTE,512);
 
     vramSetBankI(VRAM_I_LCD);
@@ -91,7 +91,7 @@ int LvlSelector::hitTest(int x,int y)
         int iy1=icons[i].y;
         int ix2=ix1+32;
         int iy2=iy1+32;
-        if(ix1<=x && x<ix2 && iy1<=y && y<iy2)
+        if(lvlComplete[i] && ix1<=x && x<ix2 && iy1<=y && y<iy2)
         {
             choice=i;
             break;

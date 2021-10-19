@@ -105,7 +105,7 @@ void Scene::init(bool intro)
         videoSetModeSub(MODE_5_2D);
         vramSetBankC(VRAM_C_SUB_BG_0x06200000);
         bgInitSub(2, BgType_Bmp8, BgSize_B8_256x256, 0, 0);
-        dmaCopy(title_bgBitmap,(void*)0x06200000,title_bgBitmapLen);
+        decompress(title_bgBitmap,(void*)0x06200000,LZ77Vram);
 
         dmaFillHalfWords(0xFFFF,BG_PALETTE_SUB,256);
     }

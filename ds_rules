@@ -36,7 +36,7 @@ endif
 
 #---------------------------------------------------------------------------------
 %.nds: %.elf
-	$(SILENTCMD)ndstool -h 0x200 -c $@ -9 $< -b $(GAME_ICON) "$(GAME_TITLE);$(GAME_SUBTITLE1);$(GAME_SUBTITLE2)" $(_ADDFILES)
+	$(SILENTCMD)ndstool -c $@ -9 $< -g DLSN HO d-Elusion 1 -b $(GAME_ICON) "$(GAME_TITLE);$(GAME_SUBTITLE1);$(GAME_SUBTITLE2)" $(_ADDFILES)
 	$(SILENTMSG) built ... $(notdir $@)
 
 #---------------------------------------------------------------------------------
