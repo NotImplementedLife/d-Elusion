@@ -7,7 +7,8 @@ $(error "Please set DEVKITARM in your environment. export DEVKITARM=<path to>dev
 endif
 
 ROOTDIR:=$(shell dirname $(realpath $(firstword $(MAKEFILE_LIST))))
-include $(ROOTDIR)/ds_rules
+#include $(ROOTDIR)/ds_rules
+include $(DEVKITARM)/ds_rules
 
 #---------------------------------------------------------------------------------
 # TARGET is the name of the output

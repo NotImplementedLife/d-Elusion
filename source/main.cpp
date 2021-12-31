@@ -9,7 +9,7 @@
 
 int main(void)
 {
-    powerOn(POWER_ALL_2D);
+    //powerOn(POWER_ALL_2D);
 
     bool endingRan=false;
 
@@ -44,8 +44,12 @@ int main(void)
             lvlComplete[level+1]=1;
 
         delete scene;
-    }
-
+    }	
+	
+	while(1)
+    {
+		swiWaitForVBlank();
+	}
 
 	return 0;
 }

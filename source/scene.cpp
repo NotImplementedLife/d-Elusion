@@ -401,7 +401,7 @@ void Scene::game_over(bool waitInput)
         {
             if(q<32)
             {
-                for(int i=0;i<256;i++)
+                for(int i=1;i<256;i++) 
                 {
                     int color=pal[i];
                     int r = color & 0x1F;
