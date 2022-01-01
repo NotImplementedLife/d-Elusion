@@ -2,7 +2,7 @@
 
 Sprite::Sprite(){}
 
-void Sprite::create(OamState *oamState, SpriteSize _size,const uint* tiles,int _framesCount)
+void Sprite::create(OamState *oamState, SpriteSize _size, const uint* tiles, int _framesCount)
 {
     oam=oamState;
     size=_size;

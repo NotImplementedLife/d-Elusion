@@ -3,6 +3,8 @@
 #include "lvlselector.hpp"
 #include "ending.hpp"
 
+#include "savedata.hpp"
+
 #ifdef HAS_SOUND
 #include "bgm_bin.h"
 #endif
@@ -15,8 +17,11 @@ int main(void)
 
     #ifdef HAS_SOUND
     soundEnable();
-    soundPlaySample(bgm_bin,SoundFormat_ADPCM,bgm_bin_size,28000,100,64,true,0);
+    soundPlaySample(bgm_bin,SoundFormat_ADPCM,bgm_bin_size,8000,100,64,true,0);
     #endif
+	
+	saveInit();
+	
     Scene* scene = new Scene();
     scene->init(true);
     scene->execute();
@@ -41,7 +46,15 @@ int main(void)
         }
 
         if(!scene->failed && level<11)
-            lvlComplete[level+1]=1;
+		{
+            lvlComplete[level+1]=1;			
+		}
+		
+		if(!scene->failed)
+		{
+			if(save_available)
+				saveWrite();
+		}
 
         delete scene;
     }	

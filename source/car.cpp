@@ -9,7 +9,7 @@ Car::Car() { }
 void Car::init()
 {
 
-    front.create(&oamMain, SpriteSize_64x64, car_spriteTiles,2);
+    front.create(&oamMain, SpriteSize_64x64, car_spriteTiles,2);	
     front.x=0;
     front.y=0;
     front.priority=2;

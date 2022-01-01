@@ -25,6 +25,7 @@ private:
     Actor* motherCat;
     u32 blocks[32];
     int startX=16, startY=16;
+	
 public:
     Scene();
     void init(bool intro=false);

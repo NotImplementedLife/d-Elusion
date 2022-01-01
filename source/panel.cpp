@@ -56,6 +56,7 @@ void Panel::setButtonState(PanelButton button,PanelButtonState state)
         bg=RGB15(23,23,23), fg=RGB15(15,15,15);
         break;
     case BtnState_Hidden:
+	default:
         bg=fg=RGB15(31,31,31);
     }
 

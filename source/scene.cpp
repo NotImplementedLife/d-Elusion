@@ -28,7 +28,7 @@ void Scene::init(bool intro)
 
     bgInit(2, BgType_ExRotation, BgSize_ER_256x256, 1, 0);
     bgSetPriority(2,3);
-    bgWrapOn(2);
+    bgWrapOn(2);	
     dmaCopy(tilesPal,BG_PALETTE,tilesPalLen);
     dmaCopy(tilesTiles, (void*)0x06000000, tilesTilesLen);
 
@@ -72,7 +72,7 @@ void Scene::init(bool intro)
         motherCat->sprite.setFrameIndex(4);
         motherCat->blockX=-10;
         motherCat->blockY=-10;
-        motherCat->padding=0;
+        motherCat->padding=0;		
 
 
         lcdMainOnTop();
