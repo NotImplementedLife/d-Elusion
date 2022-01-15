@@ -41,6 +41,7 @@ void LvlSelector::init()
 	{
 		for(int i=0;i<32;i++)
 			dmaCopy((u8*)save_warningBitmap+128*i,(void*)(0x06200000+256*(i+158)+2),128);
+		for(int i=0;i<12;i++) lvlComplete[i]=1;
 	}
 	
 	decompress(tutorial_bgBitmap,(void*)0x06000000,LZ77Vram);
